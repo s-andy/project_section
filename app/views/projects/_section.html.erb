@@ -1,0 +1,13 @@
+<p>
+  <%= label(:project, :section_id, l(:label_project_section)) %>
+  <%= parent_project_section_select_tag(ProjectSection.all(:order => 'lft'), project.section, :disabled => project.child?) %>
+</p>
+<script type="text/javascript">
+  //<![CDATA[
+  <% if defined? observe_field %>
+    $('project_description').up('p').insert({ before: $('project_section_id').up('p').remove() });
+  <% else %>
+    // TODO
+  <% end %>
+  //]]>
+</script>

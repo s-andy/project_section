@@ -1,0 +1,45 @@
+<div class="contextual">
+  <%= link_to(l(:label_project_section_new), { :controller => 'project_sections', :action => 'new' }, :class => 'icon icon-add') %>
+</div>
+
+<h2><%=l(:label_project_section_plural)%></h2>
+
+<% if @sections.any? %>
+  <div class="autoscroll">
+    <table class="list projects-listing">
+      <thead>
+        <tr>
+          <th><%=l(:label_project_section)%></th>
+          <th><%=l(:label_project_plural)%></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% project_section_tree(@sections) do |section, level| %>
+          <tr class="<%= cycle("odd", "even") %> <%= section.css_classes %> <%= (level > 0) ? "idnt idnt-#{level}" : nil %>">
+            <td class="name"><span><%= link_to_section(section) %></span></td>
+            <td align="center"><%= section.projects.count %></td>
+            <td class="buttons">
+              <%= link_to(l(:button_edit), { :controller => 'project_sections', :action => 'edit', :id => section },
+                                             :method => :post,
+                                             :class => 'icon icon-edit') %>
+              <%= link_to(l(:button_delete), { :controller => 'project_sections', :action => 'destroy', :id => section },
+                                               :confirm => l(:text_are_you_sure),
+                                               :method => :delete,
+                                               :class => 'icon icon-del') %>
+            </td>
+          </tr>
+        <% end %>
+        <tr class="<%= cycle("odd", "even") %> project root leaf unsectioned">
+          <td class="name"><em><%= l(:label_unsectioned) %></em></td>
+          <td align="center"><%= Project.unsectioned.count %></td>
+          <td class="buttons"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+
+<% html_title(l(:label_project_section_plural)) %>

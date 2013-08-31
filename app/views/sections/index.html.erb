@@ -1,0 +1,11 @@
+<h2><%= l(:label_project_plural) %></h2>
+
+<%= render_project_hierarchy(@section.projects)%>
+
+<% if User.current.logged? %>
+  <p style="text-align: right;">
+    <span class="my-project"><%= l(:label_my_projects) %></span>
+  </p>
+<% end %>
+
+<% html_title(@section) %>
