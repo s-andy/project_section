@@ -35,7 +35,11 @@ class ProjectSectionsController < ApplicationController
     end
 
     def update
-        @section.safe_attributes = params[:project_section]
+        if @section.respond_to?(:safe_attributes=)
+            @section.safe_attributes = params[:project_section]
+        else
+            @section.attributes = params[:project_section]
+        end
         @parent_section = get_parent_section_from_params
         if @section.save
             @section.set_parent!(@parent_section)
