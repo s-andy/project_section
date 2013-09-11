@@ -21,11 +21,6 @@ module SectionProjectPatch
             end
 
             safe_attributes 'section_id' unless Redmine::VERSION::MAJOR == 1 && Redmine::VERSION::MINOR == 0
-
-            def identifier=(identifier)
-                super if new_record?
-            end
-
         end
     end
 
@@ -34,7 +29,7 @@ module SectionProjectPatch
     private
 
         def validate_section_change
-            if changed.include?('section_id') && child?
+            if changed.include?('section_id') && (child? || !User.current.allowed_to?(:select_project_section, self, :global => true))
                 errors.add(:section_id, :invalid)
             end
         end

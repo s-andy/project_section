@@ -5,7 +5,8 @@ class ProjectSection < ActiveRecord::Base
 
     acts_as_nested_set :order => 'name', :dependent => :destroy
 
-    after_move :update_path
+    before_save :copy_identifier_to_path
+    after_move  :update_path
 
     validates_presence_of :name, :identifier
     validates_uniqueness_of :identifier, :scope => :parent_id
@@ -51,6 +52,10 @@ class ProjectSection < ActiveRecord::Base
     end
 
 private
+
+    def copy_identifier_to_path
+        self.path = identifier
+    end
 
     def update_path
         update_attribute(:path, to_path)

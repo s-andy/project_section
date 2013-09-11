@@ -25,6 +25,8 @@ Rails.configuration.to_prepare do
     end
 end
 
+# FIXME closed projects (2.1) + sidebar
+
 Redmine::Plugin.register :project_section do
     name 'Project section'
     author 'Andriy Lesyuk'
@@ -32,6 +34,8 @@ Redmine::Plugin.register :project_section do
     description 'Adds support for project sections, which allow to categorize projects and more.'
     url 'http://projects.andriylesyuk.com/projects/project-section'
     version '0.0.1'
+
+    permission :select_project_section, {}, :require => :loggedin
 
     menu :admin_menu, :project_sections,
                     { :controller => 'project_sections', :action => 'index' },
