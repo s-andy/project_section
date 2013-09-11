@@ -30,7 +30,7 @@ module SectionApplicationHelperPatch
                     sections += ancestors.collect{ |section| link_to_section(section, {}, :class => 'section ancestor') }
                 end
                 sections << h(@section)
-                sections.join(' &raquo; ').html_safe + ' &rsaquo;'
+                sections.join(' &raquo; ').html_safe + ' &rsaquo;'.html_safe
             elsif @project.nil? || @project.new_record?
                 page_header_title_without_sections
             elsif @project.section
@@ -58,7 +58,7 @@ module SectionApplicationHelperPatch
                 end
                 projects << h(@project)
 
-                sections.join(' &raquo; ').html_safe + ' &rsaquo; ' + projects.join(' &raquo; ').html_safe
+                sections.join(' &raquo; ').html_safe + ' &rsaquo; '.html_safe + projects.join(' &raquo; ').html_safe
             else
                 page_header_title_without_sections
             end
@@ -84,7 +84,7 @@ module SectionApplicationHelperPatch
                 end
 
                 name_prefix = level > 0 ? ('&nbsp;' * 2 * level + '&#187; ').html_safe : ''
-                name_prefix = prefix + ' &rsaquo; ' if level == 0 && prefix.present?
+                name_prefix = prefix + ' &rsaquo; '.html_safe if level == 0 && prefix.present?
 
                 select_options << content_tag(:option, name_prefix + h(project), tag_options)
             end

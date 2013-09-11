@@ -65,7 +65,7 @@ module ProjectSectionHelper
     end
 
     def section_link_full(section, options = {}, html_options = nil)
-        section.self_and_ancestors.collect{ |section| link_to_section(section, options, html_options) }.join(' &#187; ')
+        section.self_and_ancestors.collect{ |section| link_to_section(section, options, html_options) }.join(' &#187; ').html_safe
     end
 
     def parent_project_section_select_tag(sections, section = nil, options = {})
@@ -86,7 +86,7 @@ module ProjectSectionHelper
                 tag_options = { :value => section.id }
                 tag_options[:selected] = 'selected' if section == selected_option
                 tag_options.merge!(yield(section)) if block_given?
-                full_name = section.self_and_ancestors.collect{ |section| h(section) }.join(' &#187; ')
+                full_name = section.self_and_ancestors.collect{ |section| h(section) }.join(' &#187; ').html_safe
                 content << content_tag(:option, full_name, options.merge(tag_options))
             end
         end

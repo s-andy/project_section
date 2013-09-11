@@ -14,7 +14,11 @@ module SectionProjectPatch
             after_save :update_or_restore_section
             after_move :update_descendants
 
-            named_scope :unsectioned, { :conditions => { :section_id => nil } }
+            if Rails::VERSION::MAJOR < 3
+                named_scope :unsectioned, { :conditions => { :section_id => nil } }
+            else
+                scope :unsectioned, { :conditions => { :section_id => nil } }
+            end
 
             safe_attributes 'section_id' unless Redmine::VERSION::MAJOR == 1 && Redmine::VERSION::MINOR == 0
 

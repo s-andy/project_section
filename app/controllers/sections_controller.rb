@@ -13,7 +13,7 @@ private
 
     def find_section
         if params[:section]
-            @section = ProjectSection.find_by_path(params[:section].join('/'))
+            @section = ProjectSection.find_by_path(params[:section].is_a?(Array) ? params[:section].join('/') : params[:section])
             return if @section
         end
         render_404

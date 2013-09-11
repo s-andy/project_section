@@ -1,9 +1,11 @@
 <h2><%= link_to(l(:label_project_section_plural), { :controller => 'project_sections', :action => 'index' }) %> &#187; <%= l(:label_project_section_new) %></h2>
 
-<% form_for(@section, :url => { :controller => 'project_sections', :action => 'create' }, :builder => Redmine::Views::LabelledFormBuilder) do |f| %>
+<% form = form_for(@section, :url => { :controller => 'project_sections', :action => 'create' }, :builder => Redmine::Views::LabelledFormBuilder) do |f| %>
   <%= render(:partial => 'form', :locals => { :f => f }) %>
   <p>
     <%= f.submit(l(:button_create)) %>
     <%= f.submit(l(:button_create_and_continue), :name => 'continue') %>
   </p>
 <% end %>
+
+<%= form if Rails::VERSION::MAJOR >= 3 %>
