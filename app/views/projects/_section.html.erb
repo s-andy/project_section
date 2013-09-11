@@ -7,7 +7,7 @@
   <% if defined? observe_field %>
     $('project_description').up('p').insert({ before: $('project_section_id').up('p').remove() });
   <% else %>
-    // TODO
+    $('#project_description').closest('p').before($('#project_section_id').parent().remove());
   <% end %>
   //]]>
 </script>

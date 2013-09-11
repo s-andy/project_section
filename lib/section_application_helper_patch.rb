@@ -83,10 +83,13 @@ module SectionApplicationHelperPatch
                     tag_options.merge!(custom_options)
                 end
 
-                name_prefix = level > 0 ? ('&nbsp;' * 2 * level + '&#187; ').html_safe : ''
-                name_prefix = prefix + ' &rsaquo; '.html_safe if level == 0 && prefix.present?
+                if level == 0 && prefix.present?
+                    name_prefix = prefix + ' &rsaquo; '
+                else
+                    name_prefix = level > 0 ? ('&nbsp;' * 2 * level + '&#187; ') : ''
+                end
 
-                select_options << content_tag(:option, name_prefix + h(project), tag_options)
+                select_options << content_tag(:option, name_prefix.html_safe + h(project), tag_options)
             end
             select_options.html_safe
         end
