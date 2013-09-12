@@ -17,6 +17,10 @@ class ProjectSection < ActiveRecord::Base
 
     safe_attributes 'name', 'identifier'
 
+    def identifier=(identifier)
+        super if new_record?
+    end
+
     # Largely a copy of Project#set_parent!
     def set_parent!(section)
         return if !section.nil? && parent == section
@@ -54,7 +58,7 @@ class ProjectSection < ActiveRecord::Base
 private
 
     def copy_identifier_to_path
-        self.path = identifier
+        self.path = identifier if identifier_changed?
     end
 
     def update_path
