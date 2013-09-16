@@ -25,8 +25,6 @@ Rails.configuration.to_prepare do
     end
 end
 
-# FIXME closed projects (2.1) + sidebar
-
 Redmine::Plugin.register :project_section do
     name 'Project section'
     author 'Andriy Lesyuk'

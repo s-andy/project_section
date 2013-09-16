@@ -16,7 +16,13 @@
       });
     <% else %>
       $('#project_description').closest('p').before($('#project_section_id').parent().remove());
-      // TODO
+      $('#project_parent_id').bind('change', function() {
+        if (this.value) {
+          $('#project_section_id').attr('disabled','disabled');
+        } else {
+          $('#project_section_id').removeAttr('disabled');
+        }
+      });
     <% end %>
     //]]>
   </script>
