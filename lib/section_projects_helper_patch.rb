@@ -27,9 +27,9 @@ module SectionProjectsHelperPatch
                 hierarchy << '</select>'
                 hierarchy << '</div>'
             end
-            hierarchy << render_project_hierarchy_without_sections(@section ?
-                                                                   @section.projects.visible.sort_by(&:lft) :
-                                                                   Project.visible.unsectioned.sort_by(&:lft))
+            hierarchy << render_project_hierarchy_without_sections((@section ?
+                                                                    @section.projects.visible.sort_by(&:lft) :
+                                                                    Project.visible.unsectioned.sort_by(&:lft)) & projects)
             @sections = @section.descendants if @section
             if @sections.any?
                 section_ancestors = []
@@ -39,7 +39,7 @@ module SectionProjectsHelperPatch
                     end
                     heading_level = 3 + (section_ancestors.size <= 3 ? section_ancestors.size : 3)
                     heading = content_tag('h' + heading_level.to_s, section_link_full(section, {}, :class => 'sections'), :class => 'section')
-                    body = render_project_hierarchy_without_sections(section.projects.visible.sort_by(&:lft))
+                    body = render_project_hierarchy_without_sections(section.projects.visible.sort_by(&:lft) & projects)
                     hierarchy << heading + body unless body.empty?
                     section_ancestors << section
                 end

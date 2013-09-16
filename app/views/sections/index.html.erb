@@ -1,11 +1,25 @@
 <h2><%= l(:label_project_plural) %></h2>
 
-<%= render_project_hierarchy(@section.projects)%>
+<div id="projects-index">
+  <%= render_project_hierarchy(@projects)%>
+</div>
 
 <% if User.current.logged? %>
   <p style="text-align: right;">
     <span class="my-project"><%= l(:label_my_projects) %></span>
   </p>
+<% end %>
+
+<% if Project.method_defined?(:close) %>
+  <% content_for(:sidebar) do %>
+    <% form = form_tag({}, :method => :get) do %>
+      <h3><%= l(:label_project_plural) %></h3>
+      <label for="closed"><%= check_box_tag(:closed, 1, params[:closed]) %> <%= l(:label_show_closed_projects) %></label>
+      <p><%= submit_tag(l(:button_apply), :class => 'button-small', :name => nil) %></p>
+    <% end %>
+
+    <%= form if Rails::VERSION::MAJOR >= 3 %>
+  <% end %>
 <% end %>
 
 <% html_title(@section) %>

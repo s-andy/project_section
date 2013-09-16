@@ -7,6 +7,9 @@ class SectionsController < ApplicationController
     include ProjectsHelper
 
     def index
+        @projects = @section.self_and_descendants.inject([]) do |projects, section|
+            projects += !Project.method_defined?(:close) || params[:closed] ? section.projects : section.projects.active
+        end
     end
 
 private
