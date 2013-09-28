@@ -1,0 +1,8 @@
+bg:
+  permission_select_project_section: Избор на проектна секция
+  label_project_section_plural: Проектни секции
+  label_project_section: Проектна секция
+  label_project_section_new: Нова проектна секция
+  label_parent_project_section: Родителска проектна секция
+  label_unsectioned: Извън проектна секция
+  label_all_sections: Всички проектни секции
