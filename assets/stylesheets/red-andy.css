@@ -1,0 +1,21 @@
+.controller-projects.action-index h3.section,
+.controller-projects.action-index h4.section,
+.controller-projects.action-index h5.section,
+.controller-projects.action-index h6.section {
+    color: #2a5685;
+    border-color: #2a5685;
+}
+.controller-projects.action-index h3.section a,
+.controller-projects.action-index h4.section a,
+.controller-projects.action-index h5.section a,
+.controller-projects.action-index h6.section a,
+.controller-projects.action-index h3.section a:link,
+.controller-projects.action-index h4.section a:link,
+.controller-projects.action-index h5.section a:link,
+.controller-projects.action-index h6.section a:link,
+.controller-projects.action-index h3.section a:visited,
+.controller-projects.action-index h4.section a:visited,
+.controller-projects.action-index h5.section a:visited,
+.controller-projects.action-index h6.section a:visited {
+    color: #2a5685;
+}

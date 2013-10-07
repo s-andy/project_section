@@ -1,3 +1,9 @@
+.controller-projects.action-index ul.projects {
+    margin-bottom: 2em;
+}
+.controller-projects.action-index h3.section {
+    clear: both;
+}
 #admin-menu a.project-sections {
     background-image: url(../images/section.png);
 }
