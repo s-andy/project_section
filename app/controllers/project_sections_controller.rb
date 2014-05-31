@@ -1,7 +1,7 @@
 class ProjectSectionsController < ApplicationController
     layout 'admin'
 
-    before_filter :find_parent_section, :only => [ :edit, :update ]
+    before_filter :find_parent_section, :only => [ :edit, :update, :destroy ]
     before_filter :require_admin
 
     helper :project_section

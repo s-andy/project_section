@@ -45,7 +45,7 @@ module SectionProjectPatch
 
         def update_descendants
             if child?
-                update_attribute(:session_id, parent.session_id)
+                update_attribute(:section_id, parent.section_id)
             end
             Project.update_all({ :section_id => self.section_id },
                                [ 'lft > ? AND rgt < ?', self.lft, self.rgt ])
