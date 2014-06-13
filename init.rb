@@ -26,7 +26,7 @@ Rails.configuration.to_prepare do
 end
 
 Redmine::Plugin.register :project_section do
-    name 'Project section'
+    name 'Project sections'
     author 'Andriy Lesyuk'
     author_url 'http://www.andriylesyuk.com/'
     description 'Adds support for project sections, which allow to categorize projects and more.'
