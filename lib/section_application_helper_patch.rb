@@ -20,7 +20,7 @@ module SectionApplicationHelperPatch
         def page_header_title_with_sections
             if @section && params[:controller] == 'sections'
                 sections = []
-                ancestors = @section.ancestors
+                ancestors = @section.ancestors.to_a
                 if ancestors.any?
                     sections << link_to_section(ancestors.shift, {}, :class => 'section root')
                     if ancestors.size > 2
@@ -34,8 +34,8 @@ module SectionApplicationHelperPatch
             elsif @project.nil? || @project.new_record?
                 page_header_title_without_sections
             elsif @project.section
-                section_ancestors = @project.section.self_and_ancestors
-                project_ancestors = @project.root? ? [] : @project.ancestors.visible.all
+                section_ancestors = @project.section.self_and_ancestors.to_a
+                project_ancestors = @project.root? ? [] : @project.ancestors.visible.all.to_a
 
                 sections = []
                 sections << link_to_section(section_ancestors.shift, {}, :class => 'section root')

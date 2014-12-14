@@ -16,15 +16,39 @@ module SectionProjectPatch
 
             if Rails::VERSION::MAJOR < 3
                 named_scope :unsectioned, { :conditions => { :section_id => nil } }
-            else
+            elsif Rails::VERSION::MAJOR < 4
                 scope :unsectioned, { :conditions => { :section_id => nil } }
+            else
+                scope :unsectioned, lambda { where(:section_id => nil) }
             end
 
             safe_attributes 'section_id' unless Redmine::VERSION::MAJOR == 1 && Redmine::VERSION::MINOR == 0
+
+            alias_method_chain :all_issue_custom_fields, :sections
         end
     end
 
     module InstanceMethods
+
+        def available_custom_fields
+            all_custom_fields = super
+            unsectioned_custom_fields = all_custom_fields.select{ |custom_field| custom_field.sections.empty? }
+            if section
+                unsectioned_custom_fields + (all_custom_fields & section.project_custom_fields)
+            else
+                unsectioned_custom_fields
+            end
+        end
+
+        def all_issue_custom_fields_with_sections
+            all_custom_fields = all_issue_custom_fields_without_sections
+            unsectioned_custom_fields = all_custom_fields.select{ |custom_field| custom_field.sections.empty? }
+            if section
+                unsectioned_custom_fields + (all_custom_fields & section.issue_custom_fields)
+            else
+                unsectioned_custom_fields
+            end
+        end
 
     private
 

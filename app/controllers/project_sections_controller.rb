@@ -8,12 +8,12 @@ class ProjectSectionsController < ApplicationController
     include ProjectSectionHelper
 
     def index
-        @sections = ProjectSection.all(:order => 'lft')
+        @sections = all_sections
     end
 
     def new
         @section = ProjectSection.new
-        @sections = ProjectSection.all(:order => 'lft')
+        @sections = all_sections
     end
 
     def create
@@ -24,14 +24,14 @@ class ProjectSectionsController < ApplicationController
             flash[:notice] = l(:notice_successful_create)
             redirect_to(:action => params[:continue] ? 'new' : 'index')
         else
-            @sections = ProjectSection.all(:order => 'lft')
+            @sections = all_sections
             render(:action => 'new')
         end
     end
 
     def edit
         @parent_section = @section.parent
-        @sections = ProjectSection.all(:order => 'lft') - @section.self_and_descendants
+        @sections = all_sections - @section.self_and_descendants
     end
 
     def update
@@ -42,7 +42,7 @@ class ProjectSectionsController < ApplicationController
             flash[:notice] = l(:notice_successful_update)
             redirect_to(:action => 'index')
         else
-            @sections = ProjectSection.all(:order => 'lft') - @section.self_and_descendants
+            @sections = all_sections - @section.self_and_descendants
             render(:action => 'edit')
         end
     end
@@ -53,6 +53,14 @@ class ProjectSectionsController < ApplicationController
     end
 
 private
+
+    def all_sections
+        if ProjectSection.respond_to?(:order)
+            ProjectSection.order(:lft)
+        else
+            ProjectSection.all(:order => 'lft')
+        end
+    end
 
     def find_parent_section
         @section = ProjectSection.find(params[:id])

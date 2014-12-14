@@ -15,7 +15,7 @@ module SectionProjectsHelperPatch
 
         def render_project_hierarchy_with_sections(projects)
             hierarchy = ''
-            @sections = ProjectSection.all(:order => 'lft')
+            @sections = ProjectSection.respond_to?(:order) ? ProjectSection.order(:lft) : ProjectSection.all(:order => 'lft')
             if @sections.any?
                 hierarchy << '<div class="box" style="text-align: right;">'
                 hierarchy << '<select onchange="if (this.value != \'\') { window.location = this.value; }">'

@@ -8,6 +8,9 @@ class ProjectSectionHook  < Redmine::Hook::ViewListener
         stylesheets
     end
 
-    render_on :view_projects_form, :partial => 'projects/section'
+    render_on :view_projects_form,                           :partial => 'projects/section'
+    render_on :view_custom_fields_form_issue_custom_field,   :partial => 'custom_fields/sections'
+    render_on :view_custom_fields_form_project_custom_field, :partial => 'custom_fields/sections'
+    render_on :view_custom_fields_form_version_custom_field, :partial => 'custom_fields/sections'
 
 end

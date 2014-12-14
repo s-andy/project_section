@@ -1,0 +1,22 @@
+<p>
+  <label><%= l(:label_project_section_plural) %></label>
+  <label class="block">
+    <%= radio_button_tag('custom_field_sections', 1, @custom_field.sections.empty?, :id => 'custom_field_sections_all',
+                                                                                    :data => { :disables => '.custom_field_section input' }) %>
+    <%= l(:label_sections_for_all) %>
+  </label>
+  <label class="block">
+    <%= radio_button_tag('custom_field_sections', 0, @custom_field.sections.any?, :id => 'custom_field_sections_some',
+                                                                                  :data => { :enables => '.custom_field_section input' }) %>
+    <%= l(:label_sections_selected) %>:
+  </label>
+  <% sections = ProjectSection.respond_to?(:order) ? ProjectSection.order(:lft) : ProjectSection.all(:order => 'lft') %>
+  <% sections.each do |section| %>
+    <% padding = 2 + section.ancestors.size * 1.5 %>
+    <label class="block custom_field_section" style="padding-left: <%= padding %>em;">
+      <%= check_box_tag('custom_field[section_ids][]', section.id, @custom_field.sections.include?(section), :id => nil) %>
+      <%= section.name %>
+    </label>
+  <% end %>
+  <%= hidden_field_tag('custom_field[section_ids][]', '') %>
+</p>

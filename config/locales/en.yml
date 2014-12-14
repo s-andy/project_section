@@ -6,3 +6,6 @@ en:
   label_parent_project_section: Parent section
   label_unsectioned: Unsectioned
   label_all_sections: All sections
+
+  label_sections_for_all: for all sections
+  label_sections_selected: for these sections only

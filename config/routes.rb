@@ -13,13 +13,13 @@ if Rails::VERSION::MAJOR < 3
 
 else
 
-    match('sections',          :to => 'project_sections#index')
-    match('sections/new',      :to => 'project_sections#new')
-    post('sections/create',    :to => 'project_sections#create')
-    match('sections/:id/edit', :to => 'project_sections#edit')
-    put('sections/:id/update', :to => 'project_sections#update')
-    delete('sections/:id',     :to => 'project_sections#destroy')
-    match('section/*section',  :to => 'sections#index')
-    match('project/*section',  :to => 'projects#show')
+    get    'sections',            :to => 'project_sections#index'
+    get    'sections/new',        :to => 'project_sections#new'
+    post   'sections/create',     :to => 'project_sections#create'
+    post   'sections/:id/edit',   :to => 'project_sections#edit'
+    put    'sections/:id/update', :to => 'project_sections#update'
+    delete 'sections/:id',        :to => 'project_sections#destroy'
+    get    'section/*section',    :to => 'sections#index'
+    get    'project/*section',    :to => 'projects#show'
 
 end

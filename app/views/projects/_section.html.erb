@@ -1,7 +1,8 @@
 <% if User.current.allowed_to?(:select_project_section, project, :global => true) %>
   <p>
     <%= label(:project, :section_id, l(:label_project_section)) %>
-    <%= parent_project_section_select_tag(ProjectSection.all(:order => 'lft'), project.section, :disabled => project.child?) %>
+    <% sections = ProjectSection.respond_to?(:order) ? ProjectSection.order(:lft) : ProjectSection.all(:order => 'lft') %>
+    <%= parent_project_section_select_tag(sections, project.section, :disabled => project.child?) %>
   </p>
   <script type="text/javascript">
     //<![CDATA[

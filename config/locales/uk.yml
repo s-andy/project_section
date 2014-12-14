@@ -6,3 +6,6 @@ uk:
   label_parent_project_section: Старший розділ
   label_unsectioned: За межами розділів
   label_all_sections: Усі розділи
+
+  label_sections_for_all: усі розділи
+  label_sections_selected: тільки наступні розділи

@@ -23,6 +23,19 @@ Rails.configuration.to_prepare do
     unless Project.included_modules.include?(SectionProjectPatch)
         Project.send(:include, SectionProjectPatch)
     end
+    unless Version.included_modules.include?(SectionVersionPatch)
+        Version.send(:include, SectionVersionPatch)
+    end
+
+    unless IssueCustomField.included_modules.include?(SectionCustomFieldPatch)
+        IssueCustomField.send(:include, SectionCustomFieldPatch)
+    end
+    unless ProjectCustomField.included_modules.include?(SectionCustomFieldPatch)
+        ProjectCustomField.send(:include, SectionCustomFieldPatch)
+    end
+    unless VersionCustomField.included_modules.include?(SectionCustomFieldPatch)
+        VersionCustomField.send(:include, SectionCustomFieldPatch)
+    end
 end
 
 Redmine::Plugin.register :project_section do
@@ -31,7 +44,7 @@ Redmine::Plugin.register :project_section do
     author_url 'http://www.andriylesyuk.com/'
     description 'Adds support for project sections, which allow to categorize projects and more.'
     url 'http://projects.andriylesyuk.com/projects/project-section'
-    version '0.0.2'
+    version '0.1.0'
 
     permission :select_project_section, {}, :require => :loggedin
 

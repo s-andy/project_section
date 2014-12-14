@@ -6,3 +6,6 @@ ru:
   label_parent_project_section: Родительский раздел
   label_unsectioned: Вне разделов
   label_all_sections: Все разделы
+
+  label_sections_for_all: все разделы
+  label_sections_selected: только эти разделы

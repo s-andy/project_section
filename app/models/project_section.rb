@@ -3,6 +3,25 @@ class ProjectSection < ActiveRecord::Base
 
     has_many :projects, :foreign_key => 'section_id'
 
+    has_and_belongs_to_many :project_custom_fields,
+                            lambda { order("#{CustomField.table_name}.position") },
+                            :class_name => 'ProjectCustomField',
+                            :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                            :association_foreign_key => 'custom_field_id',
+                            :foreign_key => 'section_id'
+    has_and_belongs_to_many :version_custom_fields,
+                            lambda { order("#{CustomField.table_name}.position") },
+                            :class_name => 'VersionCustomField',
+                            :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                            :association_foreign_key => 'custom_field_id',
+                            :foreign_key => 'section_id'
+    has_and_belongs_to_many :issue_custom_fields,
+                            lambda { order("#{CustomField.table_name}.position") },
+                            :class_name => 'IssueCustomField',
+                            :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                            :association_foreign_key => 'custom_field_id',
+                            :foreign_key => 'section_id'
+
     acts_as_nested_set :order => 'name', :dependent => :destroy
 
     before_save :copy_identifier_to_path
@@ -12,7 +31,7 @@ class ProjectSection < ActiveRecord::Base
     validates_uniqueness_of :identifier, :scope => :parent_id
     validates_length_of :name, :maximum => 255
     validates_length_of :identifier, :in => 1..Project::IDENTIFIER_MAX_LENGTH
-    validates_format_of :identifier, :with => %r{^(?![0-9]+$)[a-z0-9\-_]*$}, :if => Proc.new { |section| section.identifier_changed? }
+    validates_format_of :identifier, :with => %r{\A(?![0-9]+$)[a-z0-9\-_]*\z}, :if => Proc.new { |section| section.identifier_changed? }
     validates_exclusion_of :identifier, :in => %w(new)
 
     safe_attributes 'name', 'identifier'
