@@ -3,24 +3,45 @@ class ProjectSection < ActiveRecord::Base
 
     has_many :projects, :foreign_key => 'section_id'
 
-    has_and_belongs_to_many :project_custom_fields,
-                            lambda { order("#{CustomField.table_name}.position") },
-                            :class_name => 'ProjectCustomField',
-                            :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
-                            :association_foreign_key => 'custom_field_id',
-                            :foreign_key => 'section_id'
-    has_and_belongs_to_many :version_custom_fields,
-                            lambda { order("#{CustomField.table_name}.position") },
-                            :class_name => 'VersionCustomField',
-                            :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
-                            :association_foreign_key => 'custom_field_id',
-                            :foreign_key => 'section_id'
-    has_and_belongs_to_many :issue_custom_fields,
-                            lambda { order("#{CustomField.table_name}.position") },
-                            :class_name => 'IssueCustomField',
-                            :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
-                            :association_foreign_key => 'custom_field_id',
-                            :foreign_key => 'section_id'
+    if Rails::VERSION::MAJOR < 4
+        has_and_belongs_to_many :project_custom_fields,
+                                :class_name => 'ProjectCustomField',
+                                :order => "#{CustomField.table_name}.position",
+                                :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                                :association_foreign_key => 'custom_field_id',
+                                :foreign_key => 'section_id'
+        has_and_belongs_to_many :version_custom_fields,
+                                :class_name => 'VersionCustomField',
+                                :order => "#{CustomField.table_name}.position",
+                                :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                                :association_foreign_key => 'custom_field_id',
+                                :foreign_key => 'section_id'
+        has_and_belongs_to_many :issue_custom_fields,
+                                :class_name => 'IssueCustomField',
+                                :order => "#{CustomField.table_name}.position",
+                                :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                                :association_foreign_key => 'custom_field_id',
+                                :foreign_key => 'section_id'
+    else
+        has_and_belongs_to_many :project_custom_fields,
+                                lambda { order("#{CustomField.table_name}.position") },
+                                :class_name => 'ProjectCustomField',
+                                :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                                :association_foreign_key => 'custom_field_id',
+                                :foreign_key => 'section_id'
+        has_and_belongs_to_many :version_custom_fields,
+                                lambda { order("#{CustomField.table_name}.position") },
+                                :class_name => 'VersionCustomField',
+                                :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                                :association_foreign_key => 'custom_field_id',
+                                :foreign_key => 'section_id'
+        has_and_belongs_to_many :issue_custom_fields,
+                                lambda { order("#{CustomField.table_name}.position") },
+                                :class_name => 'IssueCustomField',
+                                :join_table => "#{table_name_prefix}custom_fields_sections#{table_name_suffix}",
+                                :association_foreign_key => 'custom_field_id',
+                                :foreign_key => 'section_id'
+    end
 
     acts_as_nested_set :order => 'name', :dependent => :destroy
 
