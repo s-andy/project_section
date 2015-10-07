@@ -1,5 +1,6 @@
 .controller-projects.action-index ul.projects {
     margin-bottom: 2em;
+    display: inline-block;
 }
 .controller-projects.action-index h3.section {
     clear: both;

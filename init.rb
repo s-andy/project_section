@@ -26,6 +26,7 @@ Rails.configuration.to_prepare do
     unless Version.included_modules.include?(SectionVersionPatch)
         Version.send(:include, SectionVersionPatch)
     end
+    # TODO + SectionIssuePatch? Reuse patch for Project, Version and Issue? Like below?
 
     unless IssueCustomField.included_modules.include?(SectionCustomFieldPatch)
         IssueCustomField.send(:include, SectionCustomFieldPatch)

@@ -58,7 +58,7 @@ private
         if ProjectSection.respond_to?(:order)
             ProjectSection.order(:lft)
         else
-            ProjectSection.all(:order => 'lft')
+            ProjectSection.all(:order => 'lft') # FIXME
         end
     end
 

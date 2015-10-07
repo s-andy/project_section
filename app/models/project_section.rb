@@ -55,6 +55,8 @@ class ProjectSection < ActiveRecord::Base
     validates_format_of :identifier, :with => %r{\A(?![0-9]+$)[a-z0-9\-_]*\z}, :if => Proc.new { |section| section.identifier_changed? }
     validates_exclusion_of :identifier, :in => %w(new)
 
+    attr_protected :id
+
     safe_attributes 'name', 'identifier'
 
     def identifier=(identifier)

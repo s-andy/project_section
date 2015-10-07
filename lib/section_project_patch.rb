@@ -41,12 +41,16 @@ module SectionProjectPatch
         end
 
         def all_issue_custom_fields_with_sections
-            all_custom_fields = all_issue_custom_fields_without_sections
-            unsectioned_custom_fields = all_custom_fields.select{ |custom_field| custom_field.sections.empty? }
+            all_custom_fields = all_issue_custom_fields_without_sections.where("id NOT IN (" +
+                "SELECT DISTINCT cfs.custom_field_id " +
+                "FROM #{table_name_prefix}custom_fields_sections#{table_name_suffix} cfs)")
             if section
-                unsectioned_custom_fields + (all_custom_fields & section.issue_custom_fields)
+                all_custom_fields.where("id IN (" +
+                    "SELECT DISTINCT cfs.custom_field_id " +
+                    "FROM #{table_name_prefix}custom_fields_sections#{table_name_suffix} cfs " +
+                    "WHERE cfs.section_id = ?)", section.id)
             else
-                unsectioned_custom_fields
+                all_custom_fields
             end
         end
 
@@ -61,8 +65,8 @@ module SectionProjectPatch
         def update_or_restore_section
             if changed.include?('section_id')
                 if root?
-                    Project.update_all({ :section_id => self.section_id },
-                                       [ 'lft > ? AND rgt < ?', self.lft, self.rgt ])
+                    Project.where([ 'lft > ? AND rgt < ?', self.lft, self.rgt ])
+                           .update_all({ :section_id => self.section_id })
                 end
             end
         end
@@ -71,8 +75,8 @@ module SectionProjectPatch
             if child?
                 update_attribute(:section_id, parent.section_id)
             end
-            Project.update_all({ :section_id => self.section_id },
-                               [ 'lft > ? AND rgt < ?', self.lft, self.rgt ])
+            Project.where([ 'lft > ? AND rgt < ?', self.lft, self.rgt ])
+                   .update_all({ :section_id => self.section_id })
         end
 
     end

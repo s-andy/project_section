@@ -1,7 +1,7 @@
 <% if User.current.allowed_to?(:select_project_section, project, :global => true) %>
   <p>
     <%= label(:project, :section_id, l(:label_project_section)) %>
-    <% sections = ProjectSection.respond_to?(:order) ? ProjectSection.order(:lft) : ProjectSection.all(:order => 'lft') %>
+    <% sections = ProjectSection.respond_to?(:order) ? ProjectSection.order(:lft) : ProjectSection.all(:order => 'lft') %><!-- FIXME -->
     <%= parent_project_section_select_tag(sections, project.section, :disabled => project.child?) %>
   </p>
   <script type="text/javascript">
