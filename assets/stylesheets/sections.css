@@ -1,4 +1,5 @@
-.controller-projects.action-index ul.projects {
+.controller-projects.action-index ul.projects,
+.controller-sections.action-index ul.projects {
     margin-bottom: 2em;
     display: inline-block;
 }
