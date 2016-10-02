@@ -41,16 +41,20 @@ module SectionProjectPatch
         end
 
         def all_issue_custom_fields_with_sections
-            all_custom_fields = all_issue_custom_fields_without_sections.where("id NOT IN (" +
-                "SELECT DISTINCT cfs.custom_field_id " +
-                "FROM #{table_name_prefix}custom_fields_sections#{table_name_suffix} cfs)")
             if section
-                all_custom_fields.where("id IN (" +
-                    "SELECT DISTINCT cfs.custom_field_id " +
-                    "FROM #{table_name_prefix}custom_fields_sections#{table_name_suffix} cfs " +
-                    "WHERE cfs.section_id = ?)", section.id)
+                # Rewrite of the original #all_issue_custom_fields
+                @all_issue_custom_fields ||= IssueCustomField.sorted.
+                    where("is_for_all = ? OR id IN (" +
+                              "SELECT DISTINCT cfp.custom_field_id " + # FIXME make sure custom_fields_projects is empty when sections selected
+                              "FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp " +
+                              "WHERE cfp.project_id = ?" +
+                          ") OR id IN (" +
+                              "SELECT DISTINCT cfs.custom_field_id " +
+                              "FROM #{table_name_prefix}custom_fields_sections#{table_name_suffix} cfs " +
+                              "WHERE cfs.section_id = ?" +
+                          ")", true, id, section.id)
             else
-                all_custom_fields
+                all_issue_custom_fields_without_sections
             end
         end
 
