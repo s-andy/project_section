@@ -12,7 +12,12 @@ module SectionProjectPatch
             validate :validate_section_change
 
             after_save :update_or_restore_section
-            after_move :update_descendants
+
+            unless method_defined?(:after_move)
+                after_save :update_descendants, :if => Proc.new { |project| project.parent_id_changed? }
+            else # Redmine 2.5.xd
+                after_move :update_descendants
+            end
 
             if Rails::VERSION::MAJOR < 3
                 named_scope :unsectioned, { :conditions => { :section_id => nil } }

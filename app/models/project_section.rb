@@ -1,3 +1,5 @@
+require 'awesome_nested_set'
+
 class ProjectSection < ActiveRecord::Base
     include Redmine::SafeAttributes
 
