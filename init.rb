@@ -45,7 +45,7 @@ Redmine::Plugin.register :project_section do
     author_url 'http://www.andriylesyuk.com/'
     description 'Adds support for project sections, which allow to categorize projects and more.'
     url 'http://projects.andriylesyuk.com/projects/project-section'
-    version '0.1.1'
+    version '0.1.0'
 
     permission :select_project_section, {}, :require => :loggedin
 
