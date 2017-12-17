@@ -8,7 +8,7 @@ class SectionsController < ApplicationController
 
     def index
         @projects = @section.self_and_descendants.inject([]) do |projects, section|
-            projects += !Project.method_defined?(:close) || params[:closed] ? section.projects : section.projects.active
+            projects += params[:closed] ? section.projects : section.projects.active
         end
     end
 

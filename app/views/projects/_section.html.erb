@@ -1,30 +1,19 @@
 <% if User.current.allowed_to?(:select_project_section, project, :global => true) %>
   <p>
     <%= label(:project, :section_id, l(:label_project_section)) %>
-    <% sections = ProjectSection.respond_to?(:order) ? ProjectSection.order(:lft) : ProjectSection.all(:order => 'lft') %><!-- FIXME -->
+    <% sections = ProjectSection.order(:lft) %>
     <%= parent_project_section_select_tag(sections, project.section, :disabled => project.child?) %>
   </p>
   <script type="text/javascript">
     //<![CDATA[
-    <% if defined? observe_field %>
-      $('project_description').up('p').insert({ before: $('project_section_id').up('p').remove() });
-      Event.observe('project_parent_id', 'change', function() {
-        if (this.value) {
-          $('project_section_id').disable();
-        } else {
-          $('project_section_id').enable();
-        }
-      });
-    <% else %>
-      $('#project_description').closest('p').before($('#project_section_id').parent().remove());
-      $('#project_parent_id').bind('change', function() {
-        if (this.value) {
-          $('#project_section_id').attr('disabled','disabled');
-        } else {
-          $('#project_section_id').removeAttr('disabled');
-        }
-      });
-    <% end %>
+    $('#project_description').closest('p').before($('#project_section_id').parent().remove());
+    $('#project_parent_id').bind('change', function() {
+      if (this.value) {
+        $('#project_section_id').attr('disabled','disabled');
+      } else {
+        $('#project_section_id').removeAttr('disabled');
+      }
+    });
     //]]>
   </script>
 <% end %>

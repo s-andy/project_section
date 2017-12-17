@@ -19,15 +19,9 @@ module SectionProjectPatch
                 after_move :update_descendants
             end
 
-            if Rails::VERSION::MAJOR < 3
-                named_scope :unsectioned, { :conditions => { :section_id => nil } }
-            elsif Rails::VERSION::MAJOR < 4
-                scope :unsectioned, { :conditions => { :section_id => nil } }
-            else
-                scope :unsectioned, lambda { where(:section_id => nil) }
-            end
+            scope :unsectioned, lambda { where(:section_id => nil) }
 
-            safe_attributes 'section_id' unless Redmine::VERSION::MAJOR == 1 && Redmine::VERSION::MINOR == 0
+            safe_attributes 'section_id'
 
             alias_method_chain :all_issue_custom_fields, :sections
         end

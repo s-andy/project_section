@@ -55,11 +55,7 @@ class ProjectSectionsController < ApplicationController
 private
 
     def all_sections
-        if ProjectSection.respond_to?(:order)
-            ProjectSection.order(:lft)
-        else
-            ProjectSection.all(:order => 'lft') # FIXME
-        end
+        ProjectSection.order(:lft)
     end
 
     def find_parent_section
