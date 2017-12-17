@@ -1,0 +1,11 @@
+pl:
+  permission_select_project_section: Wybierz sekcję projektu
+  label_project_section_plural: Sekcje projektów
+  label_project_section: Sekcja projektów
+  label_project_section_new: Nowa sekcja projektów
+  label_parent_project_section: Sekcja nadrzędna
+  label_unsectioned: Bez podziału na sekcje
+  label_all_sections: Wszystkie sekcje
+  
+  label_sections_for_all: dla każdej sekcji
+  label_sections_selected: tylko dla tych sekcji
