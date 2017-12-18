@@ -29,8 +29,13 @@ module SectionApplicationHelperPatch
                     end
                     sections += ancestors.collect{ |section| link_to_section(section, {}, :class => 'section ancestor') }
                 end
-                sections << h(@section)
-                sections.join(' &raquo; ').html_safe + ' &rsaquo;'.html_safe
+
+                separator = content_tag(:span, ' &raquo; '.html_safe, :class => 'separator')
+                breadcrumbs = sections.any? ? sections.join(separator).html_safe + separator : ''
+
+                content_tag(:span, breadcrumbs.html_safe, :class => 'breadcrumbs') +
+                content_tag(:span, h(@section), :class => 'current-section current-project') +
+                content_tag(:span, ' &rsaquo; '.html_safe, :class => 'section-separator separator')
             elsif @project.nil? || @project.new_record?
                 page_header_title_without_sections
             elsif @project.section
@@ -56,9 +61,17 @@ module SectionApplicationHelperPatch
                     end
                     projects += project_ancestors.collect{ |project| link_to_project(project, { :jump => current_menu_item }, :class => 'project ancestor') }
                 end
-                projects << h(@project)
 
-                sections.join(' &raquo; ').html_safe + ' &rsaquo; '.html_safe + projects.join(' &raquo; ').html_safe
+                separator = content_tag(:span, ' &raquo; '.html_safe, :class => 'separator')
+                if projects.any?
+                    breadcrumbs = sections.join(separator).html_safe + content_tag(:span, ' &rsaquo; '.html_safe, :class => 'section-separator separator') +
+                                  projects.join(separator).html_safe + separator
+                else
+                    breadcrumbs = sections.join(separator).html_safe + content_tag(:span, ' &rsaquo; '.html_safe, :class => 'section-separator separator')
+                end
+
+                content_tag(:span, breadcrumbs.html_safe, :class => 'breadcrumbs') +
+                content_tag(:span, h(@project), :class => 'current-project')
             else
                 page_header_title_without_sections
             end
@@ -67,6 +80,12 @@ module SectionApplicationHelperPatch
         # Largely a copy of #project_tree_options_for_select
         def project_tree_with_sections_options_for_select(projects, options = {})
             select_options = ''
+            if blank_text = options[:include_blank]
+                if blank_text == true
+                    blank_text = '&nbsp;'.html_safe
+                end
+                select_options << content_tag(:option, blank_text, :value => '')
+            end
             project_tree_with_sections(projects) do |project, level, prefix|
                 tag_options = { :value => project.id }
                 if project == options[:selected] || (options[:selected].respond_to?(:include?) && options[:selected].include?(project))
@@ -96,7 +115,7 @@ module SectionApplicationHelperPatch
 
         def link_to_project_with_sections(project, options = {}, html_options = nil)
             if project.active? && project.section && options.is_a?(Hash) && (!options.has_key?(:action) || options[:action] == 'show')
-                link_to(h(project), sectioned_project_url(project, options), html_options)
+                link_to(project.name, sectioned_project_url(project, { :only_path => true }.merge(options)), html_options)
             else
                 link_to_project_without_sections(project, options, html_options)
             end

@@ -40,7 +40,7 @@ module SectionProjectPatch
         end
 
         def all_issue_custom_fields_with_sections
-            if section
+            if section && !new_record?
                 # Rewrite of the original #all_issue_custom_fields
                 @all_issue_custom_fields ||= IssueCustomField.sorted.
                     where("is_for_all = ? OR id IN (" +
