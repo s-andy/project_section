@@ -5,6 +5,9 @@ class ProjectSectionHook  < Redmine::Hook::ViewListener
         if File.exists?(File.join(File.dirname(__FILE__), "../assets/stylesheets/#{Setting.ui_theme}.css"))
             stylesheets << stylesheet_link_tag(Setting.ui_theme, :plugin => 'project_section')
         end
+        if Redmine::VERSION::MAJOR > 3 || (Redmine::VERSION::MAJOR == 3 && Redmine::VERSION::MINOR >= 4)
+            stylesheets << stylesheet_link_tag('columns', :plugin => 'project_section')
+        end
         stylesheets
     end
 

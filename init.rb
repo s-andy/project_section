@@ -52,5 +52,6 @@ Redmine::Plugin.register :project_section do
     menu :admin_menu, :project_sections,
                     { :controller => 'project_sections', :action => 'index' },
                       :caption => :label_project_section_plural,
+                      :html => { :class => 'icon icon-sections' },
                       :after => :projects
 end

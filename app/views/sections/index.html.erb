@@ -1,3 +1,14 @@
+<% if Redmine::VERSION::MAJOR > 3 || (Redmine::VERSION::MAJOR == 3 && Redmine::VERSION::MINOR >= 4) %>
+  <div class="contextual">
+    <%= form_tag({}, :method => :get) do %>
+      <label for="closed">
+        <%= check_box_tag 'closed', 1, params[:closed], :onchange => "this.form.submit();" %>
+        <%= l(:label_show_closed_projects) %>
+      </label>
+    <% end %>
+  </div>
+<% end %>
+
 <h2><%= l(:label_project_plural) %></h2>
 
 <div id="projects-index">
@@ -6,15 +17,17 @@
 
 <% if User.current.logged? %>
   <p style="text-align: right;">
-    <span class="my-project"><%= l(:label_my_projects) %></span>
+    <span class="icon icon-fav my-project"><%= l(:label_my_projects) %></span>
   </p>
 <% end %>
 
-<% content_for(:sidebar) do %>
-  <%= form_tag({}, :method => :get) do %>
-    <h3><%= l(:label_project_plural) %></h3>
-    <label for="closed"><%= check_box_tag(:closed, 1, params[:closed]) %> <%= l(:label_show_closed_projects) %></label>
-    <p><%= submit_tag(l(:button_apply), :class => 'button-small', :name => nil) %></p>
+<% unless Redmine::VERSION::MAJOR > 3 || (Redmine::VERSION::MAJOR == 3 && Redmine::VERSION::MINOR >= 4) %>
+  <% content_for(:sidebar) do %>
+    <%= form_tag({}, :method => :get) do %>
+      <h3><%= l(:label_project_plural) %></h3>
+      <label for="closed"><%= check_box_tag(:closed, 1, params[:closed]) %> <%= l(:label_show_closed_projects) %></label>
+      <p><%= submit_tag(l(:button_apply), :class => 'button-small', :name => nil) %></p>
+    <% end %>
   <% end %>
 <% end %>
 

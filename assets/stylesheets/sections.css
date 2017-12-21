@@ -4,7 +4,11 @@
     display: inline-block;
     width: 100%;
 }
-.controller-projects.action-index h3.section {
+.controller-projects.action-index h3.section,
+.controller-projects.action-index h4.section,
+.controller-projects.action-index h5.section,
+.controller-projects.action-index h6.section {
+    border-bottom: 1px dotted #bbb;
     clear: both;
 }
 #admin-menu a.project-sections {

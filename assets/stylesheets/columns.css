@@ -1,0 +1,15 @@
+#projects-index {
+    column-width: auto;
+    -webkit-column-width: auto;
+    -moz-column-width: auto;
+}
+#projects-index > ul.projects {
+    column-count: auto;
+    column-width: 400px;
+    -webkit-column-count: auto;
+    -webkit-column-width: 400px;
+    -webkit-column-gap : 0.5rem;
+    -moz-column-count: auto;
+    -moz-column-width: 400px;
+    -moz-column-gap : 0.5rem;
+}
