@@ -37,6 +37,10 @@ Rails.configuration.to_prepare do
     unless VersionCustomField.included_modules.include?(SectionCustomFieldPatch)
         VersionCustomField.send(:include, SectionCustomFieldPatch)
     end
+
+    unless IssueQuery.included_modules.include?(SectionIssueQueryPatch)
+        IssueQuery.send(:include, SectionIssueQueryPatch)
+    end
 end
 
 Redmine::Plugin.register :project_section do
