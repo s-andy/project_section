@@ -30,10 +30,11 @@ module ProjectSectionHelper
             else
                 ancestors = []
                 root.self_and_descendants.sort_by(&:lft).each do |project|
+                    next unless projects.include?(project)
                     while ancestors.any? && !project.is_descendant_of?(ancestors.last)
                         ancestors.pop
                     end
-                    yield(project, ancestors.size) if projects.include?(project)
+                    yield(project, ancestors.size)
                     ancestors << project
                 end
             end

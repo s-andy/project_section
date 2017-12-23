@@ -21,13 +21,6 @@
 </p>
 
 <%= javascript_tag do %>
-  $('#custom_field_is_for_all').bind('change', function() {
-    if (this.checked) {
-      $('#custom_field_section_ids input').attr('disabled','disabled');
-    } else {
-      $('#custom_field_section_ids input').removeAttr('disabled');
-    }
-  });
   $('#custom_field_sections_all').bind('change', function() {
     if (this.checked) {
       $('#custom_field_is_for_all').removeAttr('disabled');
@@ -48,5 +41,12 @@
       $('#custom_field_is_for_all').attr('disabled','disabled');
       $('#custom_field_project_ids input').attr('disabled','disabled');
     }
+    $('#custom_field_is_for_all').bind('change', function() {
+      if (this.checked) {
+        $('#custom_field_section_ids input').attr('disabled','disabled');
+      } else {
+        $('#custom_field_section_ids input').removeAttr('disabled');
+      }
+    });
   });
 <% end %>

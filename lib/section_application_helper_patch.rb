@@ -7,10 +7,13 @@ module SectionApplicationHelperPatch
         base.class_eval do
             unloadable
 
-            alias_method :project_tree_options_for_select, :project_tree_with_sections_options_for_select
+            alias_method :project_tree_options_for_select, :project_tree_options_for_select_with_section
 
             alias_method_chain :page_header_title, :sections
             alias_method_chain :link_to_project,   :sections
+
+            # Not before Redmine 3.4
+            alias_method :render_projects_for_jump_box, :render_projects_for_jump_box_with_sections if method_defined?(:render_projects_for_jump_box)
         end
     end
 
@@ -78,7 +81,7 @@ module SectionApplicationHelperPatch
         end
 
         # Largely a copy of #project_tree_options_for_select
-        def project_tree_with_sections_options_for_select(projects, options = {})
+        def project_tree_options_for_select_with_section(projects, options = {})
             select_options = ''
             if blank_text = options[:include_blank]
                 if blank_text == true
@@ -119,6 +122,19 @@ module SectionApplicationHelperPatch
             else
                 link_to_project_without_sections(project, options, html_options)
             end
+        end
+
+        # Largely a copy of #render_projects_for_jump_box
+        def render_projects_for_jump_box_with_sections(projects, selected = nil)
+            jump = params[:jump].presence || current_menu_item
+            drdn_items = ''.html_safe
+            project_tree_with_sections(projects) do |project, level, prefix|
+                padding = level * 16
+                name_prefix = (level == 0 && prefix.present?) ? prefix + ' &rsaquo; ' : ''
+                text = content_tag(:span, name_prefix.html_safe + project.name, :style => "padding-left: #{padding}px;")
+                drdn_items << link_to(text, sectioned_project_url(project, :jump => jump), :title => project.name, :class => (project == selected ? 'selected' : nil))
+            end
+            drdn_items
         end
 
     end
