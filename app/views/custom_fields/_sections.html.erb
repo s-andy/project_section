@@ -1,8 +1,6 @@
-<p>
-  <!-- TODO is_for_all should disable sections as well -->
+<p id="custom_field_section_ids">
   <label><%= l(:label_project_section_plural) %></label>
   <label class="block">
-    <!-- TODO -->
     <%= radio_button_tag('custom_field_sections', 1, @custom_field.sections.empty?, :id => 'custom_field_sections_all',
                                                                                     :data => { :disables => '.custom_field_section input' }) %>
     <%= l(:label_sections_for_all) %>
@@ -21,3 +19,34 @@
   <% end %>
   <%= hidden_field_tag('custom_field[section_ids][]', '') %>
 </p>
+
+<%= javascript_tag do %>
+  $('#custom_field_is_for_all').bind('change', function() {
+    if (this.checked) {
+      $('#custom_field_section_ids input').attr('disabled','disabled');
+    } else {
+      $('#custom_field_section_ids input').removeAttr('disabled');
+    }
+  });
+  $('#custom_field_sections_all').bind('change', function() {
+    if (this.checked) {
+      $('#custom_field_is_for_all').removeAttr('disabled');
+      $('#custom_field_project_ids input').removeAttr('disabled');
+    }
+  });
+  $('#custom_field_sections_some').bind('change', function() {
+    if (this.checked) {
+      $('#custom_field_is_for_all').attr('disabled','disabled');
+      $('#custom_field_project_ids input').attr('disabled','disabled');
+    }
+  });
+  $(document).ready(function() {
+    if ($('#custom_field_is_for_all').is(':checked')) {
+      $('#custom_field_section_ids input').attr('disabled','disabled');
+    }
+    if ($('#custom_field_sections_some').is(':checked')) {
+      $('#custom_field_is_for_all').attr('disabled','disabled');
+      $('#custom_field_project_ids input').attr('disabled','disabled');
+    }
+  });
+<% end %>

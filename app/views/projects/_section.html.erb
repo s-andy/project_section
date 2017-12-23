@@ -1,13 +1,20 @@
-<% if User.current.allowed_to?(:select_project_section, project, :global => true) %><!-- FIXME if not a child -->
+<% if User.current.allowed_to?(:select_project_section, project, :global => true) %>
   <% sections = ProjectSection.order(:lft) %>
   <% if sections.any? %>
     <p>
       <%= label(:project, :section_id, l(:label_project_section)) %>
-      <%= parent_project_section_select_tag(sections, project.section, :disabled => project.child?) %>
+      <%= parent_project_section_select_tag(sections, project.section, :disabled => project.child? || params[:parent_id]) %>
     </p>
     <script type="text/javascript">
       //<![CDATA[
       $('#project_description').closest('p').before($('#project_section_id').parent().remove());
+      $('#project_section_id').bind('change', function() {
+        if (this.value) {
+          $('#project_parent_id').attr('disabled','disabled');
+        } else {
+          $('#project_parent_id').removeAttr('disabled');
+        }
+      });
       $('#project_parent_id').bind('change', function() {
         if (this.value) {
           $('#project_section_id').attr('disabled','disabled');

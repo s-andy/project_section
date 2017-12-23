@@ -44,7 +44,7 @@ module SectionProjectPatch
                 # Rewrite of the original #all_issue_custom_fields
                 @all_issue_custom_fields ||= IssueCustomField.sorted.
                     where("is_for_all = ? OR id IN (" +
-                              "SELECT DISTINCT cfp.custom_field_id " + # FIXME make sure custom_fields_projects is empty when sections selected
+                              "SELECT DISTINCT cfp.custom_field_id " +
                               "FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp " +
                               "WHERE cfp.project_id = ?" +
                           ") OR id IN (" +

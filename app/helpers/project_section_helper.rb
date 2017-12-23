@@ -71,10 +71,11 @@ module ProjectSectionHelper
     def parent_project_section_select_tag(sections, section = nil, options = {})
         object_name = options.delete(:object) || :project
         field_name = options.delete(:field) || :section_id
+        select_disabled = options.delete(:disabled)
         select_options = ''
         select_options << '<option value=""></option>'
         select_options << project_section_tree_options_for_select(sections, options.merge(:selected => section))
-        content_tag(:select, select_options.html_safe, :name => "#{object_name}[#{field_name}]", :id => "#{object_name}_#{field_name}")
+        content_tag(:select, select_options.html_safe, :name => "#{object_name}[#{field_name}]", :id => "#{object_name}_#{field_name}", :disabled => select_disabled)
     end
 
     def project_section_tree_options_for_select(sections, options = {}, &block)
