@@ -24,7 +24,7 @@
                                              :method => :post,
                                              :class => 'icon icon-edit') %>
               <%= link_to(l(:button_delete), { :controller => 'project_sections', :action => 'destroy', :id => section },
-                                               :confirm => l(:text_are_you_sure),
+                                               :data => { :confirm => l(:text_are_you_sure) },
                                                :method => :delete,
                                                :class => 'icon icon-del') %>
             </td>
