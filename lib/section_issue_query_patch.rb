@@ -20,9 +20,9 @@ module SectionIssueQueryPatch
 
             if project.nil?
                 section_values = all_sections_values
-                add_available_filter('section_id',
+                add_available_filter('project.section_id',
                     :type => :list,
-                    :name => l(:label_project_section),
+                    :name => l(:label_attribute_of_project, :name => l(:label_project_section)),
                     :values => section_values
                 ) unless section_values.empty?
             end
@@ -40,7 +40,7 @@ module SectionIssueQueryPatch
             end
         end
 
-        def sql_for_section_id_field(field, operator, value)
+        def sql_for_project_section_id_field(field, operator, value)
             sql_operator = (operator == '=') ? 'IN' : 'NOT IN'
             "#{Issue.table_name}.project_id #{sql_operator} (SELECT #{Project.table_name}.id FROM #{Project.table_name} WHERE #{Project.table_name}.section_id = #{value.first.to_i})"
         end

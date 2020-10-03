@@ -8,23 +8,18 @@
     <script type="text/javascript">
       //<![CDATA[
       $('#project_description').closest('p').before($('#project_section_id').parent().remove());
-      $('#project_section_id').bind('change', function() {
-        if (this.value) {
-          $('#project_parent_id').attr('disabled','disabled');
-        } else {
-          $('#project_parent_id').removeAttr('disabled');
-        }
-      });
       $('#project_parent_id').bind('change', function() {
         if (this.value) {
+          $.ajax({
+            url: '<%= section_for_project_path(:format => 'js') %>',
+            type: 'get',
+            data: { 'id': this.value }
+          });
           $('#project_section_id').attr('disabled','disabled');
         } else {
           $('#project_section_id').removeAttr('disabled');
         }
       });
-      <% if project.section %>
-        $('#project_parent_id').attr('disabled','disabled');
-      <% end %>
       //]]>
     </script>
   <% end %>
