@@ -7,10 +7,13 @@ module SectionApplicationHelperPatch
         base.class_eval do
             unloadable
 
+            alias_method :page_header_title_without_sections, :page_header_title
+            alias_method :page_header_title, :page_header_title_with_sections
+
             alias_method :project_tree_options_for_select, :project_tree_options_for_select_with_section
 
-            alias_method_chain :page_header_title, :sections
-            alias_method_chain :link_to_project,   :sections
+            alias_method :link_to_project_without_sections, :link_to_project
+            alias_method :link_to_project, :link_to_project_with_sections
 
             # Not before Redmine 3.4
             alias_method :render_projects_for_jump_box, :render_projects_for_jump_box_with_sections if method_defined?(:render_projects_for_jump_box)

@@ -1,4 +1,4 @@
-class CreateProjectSections < ActiveRecord::Migration
+class CreateProjectSections < Rails::VERSION::MAJOR < 5 ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
 
     def self.up
         create_table :project_sections do |t|

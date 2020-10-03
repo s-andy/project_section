@@ -8,9 +8,9 @@ module SectionProjectsControllerPatch
         base.class_eval do
             unloadable
 
-            prepend_before_filter :find_sectioned_project, :only => :show
+            prepend_before_action :find_sectioned_project, :only => :show
 
-            before_filter :check_section, :only => :show
+            before_action :check_section, :only => :show
         end
     end
 
@@ -30,14 +30,10 @@ module SectionProjectsControllerPatch
 
         def check_section
             if params[:section]
-                if params[:section].is_a?(Array)
-                    if @project.section.to_path != params[:section].join('/')
-                        redirect_to(sectioned_project_url(@project, params), :status => :moved_permanently)
-                    end
-                else
-                    if @project.section.to_path != params[:section]
-                        redirect_to(sectioned_project_url(@project, params), :status => :moved_permanently)
-                    end
+                section_path = params[:section].is_a?(Array) ? params[:section].join('/') : params[:section]
+                if @project.section.to_path != section_path
+                    args = params.respond_to?(:to_unsafe_hash) ? params.to_unsafe_hash : params
+                    redirect_to(sectioned_project_url(@project, args.except(:protocol, :host, :only_path)), :status => :moved_permanently)
                 end
             end
         end

@@ -1,4 +1,4 @@
-class CreateCustomFieldsSections < ActiveRecord::Migration
+class CreateCustomFieldsSections < Rails::VERSION::MAJOR < 5 ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
 
     def self.up
         create_table :custom_fields_sections, :id => false do |t|

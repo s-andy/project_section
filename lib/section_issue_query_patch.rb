@@ -8,7 +8,8 @@ module SectionIssueQueryPatch
         base.class_eval do
             unloadable
 
-            alias_method_chain :initialize_available_filters, :sections
+            alias_method :initialize_available_filters_without_sections, :initialize_available_filters
+            alias_method :initialize_available_filters, :initialize_available_filters_with_sections
         end
     end
 

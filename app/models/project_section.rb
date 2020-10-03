@@ -36,7 +36,7 @@ class ProjectSection < ActiveRecord::Base
     validates_format_of :identifier, :with => %r{\A(?![0-9]+$)[a-z0-9\-_]*\z}, :if => Proc.new { |section| section.identifier_changed? }
     validates_exclusion_of :identifier, :in => %w(new)
 
-    attr_protected :id
+    attr_protected :id if Rails::VERSION::MAJOR < 5
 
     safe_attributes 'name', 'identifier'
 
@@ -44,7 +44,6 @@ class ProjectSection < ActiveRecord::Base
         super if new_record?
     end
 
-    # Largely a copy of Project#set_parent!
     def set_parent!(section)
         return if !section.nil? && parent == section
         return unless section.nil? || move_possible?(section)

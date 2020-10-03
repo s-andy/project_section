@@ -1,8 +1,9 @@
 class ProjectSectionsController < ApplicationController
     layout 'admin'
+    self.main_menu = false if self.respond_to?(:main_menu)
 
-    before_filter :find_parent_section, :only => [ :edit, :update, :destroy ]
-    before_filter :require_admin
+    before_action :find_parent_section, :only => [ :edit, :update, :destroy ]
+    before_action :require_admin
 
     helper :project_section
     include ProjectSectionHelper
@@ -17,7 +18,8 @@ class ProjectSectionsController < ApplicationController
     end
 
     def create
-        @section = ProjectSection.new(params[:project_section])
+        @section = ProjectSection.new
+        @section.safe_attributes = params[:project_section]
         @parent_section = get_parent_section_from_params
         if section_identifier_is_valid? && @section.save
             @section.set_parent!(@parent_section)

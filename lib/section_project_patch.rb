@@ -14,7 +14,9 @@ module SectionProjectPatch
             after_save :update_or_restore_section
 
             unless method_defined?(:after_move)
-                after_save :update_descendants, :if => Proc.new { |project| project.parent_id_changed? }
+                after_save :update_descendants, :if => Proc.new { |project|
+                    Rails::VERSION::MAJOR < 5 || (Rails::VERSION::MAJOR == 5 && Rails::VERSION::MINOR < 1) ? project.parent_id_changed? : project.saved_change_to_parent_id?
+                }
             else # Redmine 2.5.xd
                 after_move :update_descendants
             end
@@ -23,7 +25,8 @@ module SectionProjectPatch
 
             safe_attributes 'section_id'
 
-            alias_method_chain :all_issue_custom_fields, :sections
+            alias_method :all_issue_custom_fields_without_sections, :all_issue_custom_fields
+            alias_method :all_issue_custom_fields, :all_issue_custom_fields_with_sections
         end
     end
 
@@ -60,13 +63,13 @@ module SectionProjectPatch
     private
 
         def validate_section_change
-            if changed.include?('section_id') && (child? || !User.current.allowed_to?(:select_project_section, self, :global => true))
+            if section_id_changed? && (child? || !User.current.allowed_to?(:select_project_section, self, :global => true))
                 errors.add(:section_id, :invalid)
             end
         end
 
         def update_or_restore_section
-            if changed.include?('section_id')
+            if Rails::VERSION::MAJOR < 5 || (Rails::VERSION::MAJOR == 5 && Rails::VERSION::MINOR < 1) ? section_id_changed? : saved_change_to_section_id?
                 if root?
                     Project.where([ 'lft > ? AND rgt < ?', self.lft, self.rgt ])
                            .update_all({ :section_id => self.section_id })

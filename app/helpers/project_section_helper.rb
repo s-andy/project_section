@@ -43,8 +43,10 @@ module ProjectSectionHelper
 
     def sectioned_project_url(project, options = {})
         if project.section && (!options.has_key?(:action) || options[:action] == 'show')
+            host = options.delete(:host) || Setting.host_name
+            protocol = options.delete(:protocol) || Setting.protocol
             url = "#{Redmine::Utils.relative_url_root}/project/#{project.section.to_path}/#{project.to_param}"
-            url = "#{Setting.protocol}://#{Setting.host_name}" + url if options.delete(:only_path) == false
+            url = "#{protocol}://#{host}" + url if options.delete(:only_path) == false
             args = options.reject{ |option, value| [ :controller, :action, :section, :id ].include?(option.to_sym) }
             url << '?' + args.collect{ |name, value| CGI.escape(name.to_s) + '=' + CGI.escape(value.to_s) }.join('&') if args.any?
             url
@@ -54,8 +56,10 @@ module ProjectSectionHelper
     end
 
     def section_url(section, options = {})
+        host = options.delete(:host) || Setting.host_name
+        protocol = options.delete(:protocol) || Setting.protocol
         url = "#{Redmine::Utils.relative_url_root}/section/#{section.to_path}"
-        url = "#{Setting.protocol}://#{Setting.host_name}" + url if options.delete(:only_path) == false
+        url = "#{protocol}://#{host}" + url if options.delete(:only_path) == false
         args = options.reject{ |option| [ :controller, :action, :section ].include?(option) }
         url << '?' + args.collect{ |name, value| CGI.escape(name.to_s) + '=' + CGI.escape(value.to_s) }.join('&') if args.any?
         url

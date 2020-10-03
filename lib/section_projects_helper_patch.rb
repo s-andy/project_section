@@ -7,7 +7,8 @@ module SectionProjectsHelperPatch
         base.class_eval do
             unloadable
 
-            alias_method_chain :render_project_hierarchy, :sections
+            alias_method :render_project_hierarchy_without_sections, :render_project_hierarchy
+            alias_method :render_project_hierarchy, :render_project_hierarchy_with_sections
         end
     end
 

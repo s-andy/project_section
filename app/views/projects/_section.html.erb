@@ -22,6 +22,9 @@
           $('#project_section_id').removeAttr('disabled');
         }
       });
+      <% if project.section %>
+        $('#project_parent_id').attr('disabled','disabled');
+      <% end %>
       //]]>
     </script>
   <% end %>

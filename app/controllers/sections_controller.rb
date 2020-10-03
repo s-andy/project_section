@@ -1,7 +1,9 @@
 require_dependency 'projects_helper'
 
 class SectionsController < ApplicationController
-    before_filter :find_section
+    menu_item :projects
+
+    before_action :find_section
 
     helper :projects
     include ProjectsHelper
